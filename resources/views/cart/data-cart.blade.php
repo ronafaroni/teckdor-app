@@ -72,13 +72,6 @@
                                 </div>
                                 <div class="d-flex flex-column align-items-end justify-content-between">
                                     <div class="d-flex justify-content-between gap-1 w-100">
-                                        <!-- Tombol Order Now -->
-                                        <button type="button"
-                                            class="btn btn-dark radius-8 d-flex align-items-center justify-content-center gap-2 order-now-btn"
-                                            data-product-id="{{ $itemCart->id }}">
-                                            <iconify-icon icon="mdi:cart-check" class="menu-icon text-lg"></iconify-icon>
-                                            <span>Order Now</span>
-                                        </button>
 
                                         <!-- Tombol Edit -->
                                         <a href="{{ route('edit-cart', $itemCart->id) }}"
@@ -115,7 +108,7 @@
         <button type="submit" class="btn btn-dark radius-8 d-flex align-items-center justify-content-center gap-2"
             onclick="return confirm('Are you sure want to order now?')">
             <iconify-icon icon="lets-icons:check-fill" class="menu-icon text-lg"></iconify-icon>
-            <span>Order Checked</span>
+            <span>Order Now</span>
         </button>
     </form>
     @endif
