@@ -86,11 +86,6 @@
                                     class="ri-circle-fill circle-icon text-secondary-600 w-auto"></i> Order List</a>
                         </li>
                         <li>
-                            <a href="{{ route('order-payment') }}"><i
-                                    class="ri-circle-fill circle-icon text-secondary-main w-auto"></i>
-                                Order Payment</a>
-                        </li>
-                        <li>
                             <a href="{{ route('order-progress') }}"><i
                                     class="ri-circle-fill circle-icon text-secondary-main w-auto"></i> Order
                                 Progress</a>
@@ -109,11 +104,27 @@
 
                 <li class="sidebar-menu-group-title">Settings</li>
 
-                <li>
-                    <a href="{{ route('order-progress-setting') }}">
-                        <iconify-icon icon="lets-icons:time-progress" class="menu-icon"></iconify-icon>
-                        <span>Order Progress</span>
+                <li class="dropdown">
+                    <a href="javascript:void(0)">
+                        <iconify-icon icon="fluent-mdl2:product" class="menu-icon"></iconify-icon>
+                        <span>Data Master</span>
                     </a>
+                    <ul class="sidebar-submenu">
+                        <li>
+                            <a href="{{ route('data-category') }}"><i
+                                    class="ri-circle-fill circle-icon text-secondary-600 w-auto"></i> Data Category</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('data-supplier') }}"><i
+                                    class="ri-circle-fill circle-icon text-secondary-main w-auto"></i>
+                                Data Supplier</a>
+                        </li>
+                        <li>
+                            <a href="{{ route('order-progress-setting') }}"><i
+                                    class="ri-circle-fill circle-icon text-secondary-main w-auto"></i>
+                                Order Settings</a>
+                        </li>
+                    </ul>
                 </li>
 
                 <li class="dropdown">
@@ -126,11 +137,6 @@
                             <a href="{{ route('data-users') }}"><i
                                     class="ri-circle-fill circle-icon text-secondary-600 w-auto"></i>
                                 Add Users</a>
-                        </li>
-                        <li>
-                            <a href="{{ route('data-supplier') }}"><i
-                                    class="ri-circle-fill circle-icon text-secondary-main w-auto"></i>
-                                Supplier</a>
                         </li>
                     </ul>
                 </li>

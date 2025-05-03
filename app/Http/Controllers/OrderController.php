@@ -440,7 +440,7 @@ class OrderController extends Controller
 
     public function orderProgressSetting()
     {
-        $order_progress = OrderProgressSetting::all()->orderBy('created_at', 'desc');
+        $order_progress = OrderProgressSetting::orderBy('created_at', 'desc');
         return view('order.order-progress-setting', compact('order_progress'));
     }
 
