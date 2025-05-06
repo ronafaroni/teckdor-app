@@ -37,8 +37,8 @@
 
     <section class="auth bg-base d-flex flex-wrap">
         <div class="auth-left d-lg-block d-none">
-            <div class="d-flex align-items-center flex-column h-100 justify-content-center">
-                <img src="assets/images/banner-auth.png" alt="Banner" class="img-fluid">
+            <div class="d-flex align-items-center flex-column h-100 w-100 justify-content-center">
+                <img src="assets/images/banner-auth.png" alt="Banner" class="w-100 h-100" style="object-fit: cover;">
             </div>
         </div>
         <div class="auth-right d-flex flex-column justify-content-center">
