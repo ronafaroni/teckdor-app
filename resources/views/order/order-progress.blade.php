@@ -29,6 +29,7 @@
                         <thead>
                             <tr>
                                 <th>Order Product</th>
+                                <th>Total Payment</th>
                                 <th>Progress Update</th>
                                 <th>Actions</th>
                             </tr>
@@ -49,9 +50,15 @@
                                                     <span class="text-muted text-sm">Customer:
                                                         {{ $order->user->name }}</span>
                                                     <h6 class="fw-medium mb-1">{{ $order->product->name_product }}</h6>
-                                                    <span class="text-muted text-sm">Status > <b>Paid Payment</b></span>
+                                                    <span class="text-muted text-sm">
+                                                        Order : {{ $order->qty }} Set | Date :
+                                                        {{ $order->created_at->format('d F Y') }}
+                                                    </span>
                                                 </div>
                                             </div>
+                                        </td>
+                                        <td>
+                                            <h6>{{ number_format($order->qty * $order->total_payment) }}</h6>
                                         </td>
                                         <td>
                                             <span class="fw-medium">
@@ -167,6 +174,17 @@
                                 </div>
 
                                 <div class="modal-body">
+                                    <label class="form-label">Finishing Type</label>
+                                    <select name="finishing_name" class="form-select">
+                                        <option value="" disabled selected>Select Type</option>
+                                        @foreach ($finishing as $item)
+                                            <option value="{{ $item->name }}">{{ $item->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="modal-body">
                                     <div class="d-flex align-items-center flex-wrap gap-2">
                                         <label for="switch1">Order Status : </label>
                                         <div class="form-switch switch-primary d-flex align-items-center gap-3">
@@ -207,6 +225,7 @@
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Finishing</th>
                                         <th scope="col">Date</th>
                                         <th scope="col">Action</th>
                                     </tr>
@@ -218,6 +237,7 @@
                                             <tr>
                                                 <td>{{ $no++ }}</td>
                                                 <td>{{ $progress->name_progress }}</td>
+                                                <td>{{ $progress->finishing }}</td>
                                                 <td>{{ $progress->created_at->format('d F Y H:i:s') }}</td>
                                                 <td>
                                                     <form action="{{ route('order-progress-delete', $progress->id) }}"

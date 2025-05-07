@@ -120,6 +120,11 @@
                                 Data Supplier</a>
                         </li>
                         <li>
+                            <a href="{{ route('data-finishing') }}"><i
+                                    class="ri-circle-fill circle-icon text-secondary-main w-auto"></i>
+                                Data Finishing</a>
+                        </li>
+                        <li>
                             <a href="{{ route('order-progress-setting') }}"><i
                                     class="ri-circle-fill circle-icon text-secondary-main w-auto"></i>
                                 Order Settings</a>

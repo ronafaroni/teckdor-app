@@ -5,6 +5,9 @@ namespace App\Models;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Supplier;
+use App\Models\OrderProgress;
+use App\Models\OrderShipping;
+use App\Models\Finance;
 use App\Models\ProductImg;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -57,5 +60,9 @@ class Order extends Model
     public function orderShipping()
     {
         return $this->hasMany(OrderShipping::class, 'order_id');
+    }
+    public function finance()
+    {
+        return $this->hasMany(Finance::class, 'order_id');
     }
 }

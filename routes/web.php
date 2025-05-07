@@ -127,4 +127,9 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/report-log-export', [OrderShippingExportController::class, 'reportLogExport'])->name('report-log-export');
 
+    Route::get('/data-finishing', [OrderController::class, 'dataFinishing'])->name('data-finishing');
+    Route::post('/order-finishing', [OrderController::class, 'orderFinishing'])->name('order-finishing');
+    Route::post('/order-finishing-update/{id}', [OrderController::class, 'orderFinishingUpdate'])->name('order-finishing-update');
+    Route::get('/data-finishing-delete/{id}', [OrderController::class, 'dataFinishingDelete'])->name('data-finishing-delete');
+
 });

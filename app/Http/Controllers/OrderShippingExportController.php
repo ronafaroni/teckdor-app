@@ -33,7 +33,14 @@ class OrderShippingExportController extends Controller
         $start_date = $request->input('start_date') ? \Carbon\Carbon::parse($request->input('start_date'))->format('Y-m-d') : 'N/A';
         $end_date = $request->input('end_date') ? \Carbon\Carbon::parse($request->input('end_date'))->format('Y-m-d') : 'N/A';
 
-        $reportLog = Order::with(['product.category', 'user', 'orderShipping'])
+        $reportLog = Order::with([
+            'product.category',
+            'product.supplier',
+            'user',
+            'finance',
+            'orderProgress',
+            'orderShipping'
+        ])
             ->where('is_draft', 'false')
             ->when($request->input('start_date'), function ($query) use ($request) {
                 return $query->whereDate('order_date', '>=', $request->input('start_date'));

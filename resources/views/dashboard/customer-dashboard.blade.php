@@ -30,33 +30,59 @@
                 <div id="allProducts" class="tab-pane fade show active" role="tabpanel" aria-labelledby="pills-all-tab"
                     tabindex="0">
                     <div class="row gy-4">
-                        @foreach ($product as $itemProduct)
-                            <a href="{{ route('show-product', $itemProduct->id) }}" class="col-xxl-4 col-md-4 col-sm-6">
-                                <div class="hover-scale-img border radius-16 overflow-hidden">
-                                    <div class="position-relative overflow-hidden" style="height: 266px; width: 100%;">
-                                        <img src="{{ asset('storage/' . $itemProduct->thumbnail) }}" alt=""
-                                            class="hover-scale-img__img w-100 h-100 object-fit-cover"
-                                            style="height: 100%; width: 100%; object-fit: cover; object-position: center;">
-                                        <button type="button"
-                                            class="btn rounded-pill btn-sm btn-danger-100 text-danger-600 radius-8 px-3 py-1 position-absolute end-0 bottom-0 m-2">
-                                            {{ $itemProduct->category->name_category }}
-                                        </button>
-                                    </div>
-                                    <div class="py-16 px-24">
-                                        <p class="mb-4"><b>{{ $itemProduct->name_product }}</b></p>
-                                        <div class="row">
-                                            <div class="col-12 d-flex justify-content-between">
-                                                <p class="mb-0 text-sm">
-                                                    Stock :
-                                                    {{ ($itemProduct->product_stocks_sum_stock ?? 0) + ($itemProduct->stock ?? 0) + ($itemProduct->orders_sum_qty ?? 0) }}
-                                                    Set
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </a>
-                        @endforeach
+                        <div class="table-responsive scroll-sm">
+                            <table class="table bordered-table mb-0" data-page-length='10'>
+                                <thead>
+                                    <tr>
+                                        <th scope="col"></th>
+                                        <th scope="col">Code</th>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Category</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Stocks</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody align="center">
+                                    @foreach ($product as $itemProduct)
+                                        <tr>
+                                            <td>
+                                                <div class="form-check style-check d-flex align-items-center">
+                                                    <label class="form-check-label">
+                                                        {{ $loop->iteration }}
+                                                    </label>
+                                                </div>
+                                            </td>
+                                            <td>{{ $itemProduct->code_product }}</td>
+                                            <td>
+                                                <div class="d-flex align-items-center">
+                                                    <img src="{{ asset('storage/' . $itemProduct->thumbnail) }}"
+                                                        alt="" class="flex-shrink-0 me-12 radius-8"
+                                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                                                    <h6 class="text-md mb-0 fw-medium flex-grow-1">
+                                                        {{ $itemProduct->name_product }}</h6>
+                                                </div>
+                                            </td>
+                                            <td>{{ $itemProduct->category->name_category }}</td>
+                                            <td>{{ 'Rp. ' . number_format($itemProduct->price) ?? 'Rp. 0' }}</td>
+                                            <td>
+                                                {{ ($itemProduct->product_stocks_sum_stock ?? 0) + ($itemProduct->stock ?? 0) + ($itemProduct->orders_sum_qty ?? 0) }}
+                                                Set
+                                            </td>
+                                            <td>
+                                                <a href="{{ route('show-product', $itemProduct->id) }}"
+                                                    class="btn btn-danger radius-8 d-flex align-items-center justify-content-center gap-2">
+                                                    <iconify-icon icon="lucide:edit"
+                                                        class="menu-icon text-lg"></iconify-icon>
+                                                    <span>Order Now</span>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
@@ -70,30 +96,60 @@
                             </div>
                         @else
                             <div class="row gy-4">
-                                @foreach ($itemCategory->products as $data)
-                                    <a href="{{ route('show-product', $data->id) }}" class="col-xxl-4 col-md-4 col-sm-6">
-                                        <div class="hover-scale-img border radius-16 overflow-hidden">
-                                            <div class="position-relative overflow-hidden"
-                                                style="height: 266px; width: 100%;">
-                                                <img src="{{ asset('storage/' . $data->thumbnail) }}" alt=""
-                                                    class="hover-scale-img__img w-100 h-100 object-fit-cover"
-                                                    style="height: 100%; width: 100%; object-fit: cover; object-position: center;">
-                                                <button type="button"
-                                                    class="btn rounded-pill btn-sm btn-danger-100 text-danger-600 radius-8 px-3 py-1 position-absolute end-0 bottom-0 m-2">
-                                                    {{ $data->category->name_category }}
-                                                </button>
-                                            </div>
-                                            <div class="py-16 px-24">
-                                                <p class="mb-4"><b>{{ $data->name_product }}</b></p>
-                                                <div class="row">
-                                                    <div class="col-12 d-flex justify-content-between">
-                                                        <p class="mb-0 text-sm">Stock : {{ $data->stock }}</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </a>
-                                @endforeach
+                                <div class="table-responsive scroll-sm">
+                                    <table class="table bordered-table mb-0" data-page-length='10'>
+                                        <thead>
+                                            <tr>
+                                                <th scope="col"></th>
+                                                <th scope="col">Code</th>
+                                                <th scope="col">Product</th>
+                                                <th scope="col">Category</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Stocks</th>
+                                                <th scope="col">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody align="center">
+                                            @foreach ($itemCategory->products as $data)
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-check style-check d-flex align-items-center">
+                                                            <label class="form-check-label">
+                                                                {{ $loop->iteration }}
+                                                            </label>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $data->code_product }}</td>
+                                                    <td>
+                                                        <div class="d-flex align-items-center">
+                                                            <img src="{{ asset('storage/' . $data->thumbnail) }}"
+                                                                alt="" class="flex-shrink-0 me-12 radius-8"
+                                                                style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                                                            <h6 class="text-md mb-0 fw-medium flex-grow-1">
+                                                                {{ $data->name_product }}</h6>
+                                                        </div>
+                                                    </td>
+                                                    <td>{{ $data->category->name_category }}</td>
+                                                    <td>{{ 'Rp. ' . number_format($data->price) ?? 'Rp. 0' }}</td>
+                                                    <td>
+                                                        {{ ($data->product_stocks_sum_stock ?? 0) + ($data->stock ?? 0) + ($data->orders_sum_qty ?? 0) }}
+                                                        Set
+                                                    </td>
+                                                    <td>
+                                                        <a href="{{ route('show-product', $itemProduct->id) }}"
+                                                            class="btn btn-danger radius-8 d-flex align-items-center justify-content-center gap-2">
+                                                            <iconify-icon icon="lucide:edit"
+                                                                class="menu-icon text-lg"></iconify-icon>
+                                                            <span>Order Now</span>
+                                                        </a>
+                                                    </td>
+
+                                                </tr>
+                                            @endforeach
+
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         @endif
                     </div>

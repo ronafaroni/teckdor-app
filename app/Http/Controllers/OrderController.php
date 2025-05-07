@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Finishing;
 use App\Models\OrderProgress;
 use Illuminate\Http\Request;
 use App\Models\Product;
@@ -21,6 +22,19 @@ class OrderController extends Controller
     public function dataOrder()
     {
         $customerId = Auth::user()->id;
+
+        $order_list = Order::with([
+            'product',
+            'user',
+            'orderProgress' => function ($query) {
+                $query->latest()->limit(1);
+            }
+        ])
+            ->where('user_id', $customerId)
+            ->where('is_draft', 'false')
+            ->orderBy('order_date', 'desc')
+            ->get();
+
         $order_submit = Order::with('product', 'user')
             ->where('user_id', $customerId)
             ->where('is_draft', 'false')
@@ -88,6 +102,7 @@ class OrderController extends Controller
             ->get();
 
         return view('order.data-order', compact(
+            'order_list',
             'order_submit',
             'order_confirm',
             'order_progress',
@@ -178,7 +193,7 @@ class OrderController extends Controller
         ])
             ->where('is_draft', 'false')
             ->where('status', 'approved')
-            ->where('payment_status', '!=', null)
+            // ->where('payment_status', '!=', null)
             ->orderBy('updated_at', 'desc')
             ->get()
             ->groupBy('product.supplier.name_supplier');
@@ -195,10 +210,13 @@ class OrderController extends Controller
 
         $order_progress_list = OrderProgress::all();
 
+        $finishing = Finishing::all();
+
         return view('order.order-progress', compact(
             'paginatedOrders',
             'order_progress',
-            'order_progress_list'
+            'order_progress_list',
+            'finishing'
         ));
     }
 
@@ -440,7 +458,7 @@ class OrderController extends Controller
 
     public function orderProgressSetting()
     {
-        $order_progress = OrderProgressSetting::orderBy('created_at', 'desc');
+        $order_progress = OrderProgressSetting::all()->sortDesc();
         return view('order.order-progress-setting', compact('order_progress'));
     }
 
@@ -473,6 +491,7 @@ class OrderController extends Controller
         $order->order_id = $request->order_id;
         $order->code_order = $request->code_order;
         $order->name_progress = $request->progress_name ?? ($request->status === 'finish' ? 'Finished' : null);
+        $order->finishing = $request->finishing_name;
         $order->status = $request->status ?? 'progress';
         $order->save();
         return redirect()->route('order-progress')->with('success', 'Order progress updated successfully.');
@@ -576,6 +595,35 @@ class OrderController extends Controller
             ->groupBy('code_order');
 
         return view('order.order-log', compact('orders'));
+    }
+
+    public function dataFinishing()
+    {
+        $finishing = Finishing::all()->sortDesc();
+        return view('order.order-finishing', compact('finishing'));
+    }
+
+    public function orderFinishing(Request $request)
+    {
+        $order = new Finishing;
+        $order->name = $request->finishing_name;
+        $order->save();
+        return redirect()->route('data-finishing')->with('success', 'Finishing added successfully.');
+    }
+
+    public function orderFinishingUpdate(Request $request, $id)
+    {
+        $order = Finishing::find($id);
+        $order->name = $request->finishing_name;
+        $order->save();
+        return redirect()->route('data-finishing')->with('success', 'Finishing updated successfully.');
+    }
+
+    public function dataFinishingDelete($id)
+    {
+        $order = Finishing::find($id);
+        $order->delete();
+        return redirect()->route('data-finishing')->with('deleted', 'Finishing deleted successfully.');
     }
 
 }

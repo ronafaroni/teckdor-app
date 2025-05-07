@@ -12,6 +12,7 @@ class OrderProgress extends Model
         'order_id',
         'code_order',
         'name_progress',
+        'finishing',
         'status',
     ];
 

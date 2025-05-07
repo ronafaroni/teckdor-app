@@ -2,486 +2,113 @@
 
 @section('customer-content')
     <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-24">
-        <h6 class="fw-semibold mb-0">Order</h6>
+        <h6 class="fw-semibold mb-0">Orders</h6>
         <ul class="d-flex align-items-center gap-2">
 
         </ul>
     </div>
 
-    <div class="col-xxl-12">
-        <div class="card p-0 overflow-hidden position-relative radius-12 h-100">
-            <div
-                class="card-header pt-16 pb-0 px-24 bg-base border border-end-0 border-start-0 border-top-0 d-flex align-items-center flex-wrap justify-content-between">
-                <ul class="nav bordered-tab d-inline-flex nav-pills mb-0 w-100" id="pills-tab-six" role="tablist">
-                    <li class="nav-item flex-grow-1" role="presentation">
-                        <button class="nav-link px-16 py-10 active w-100" id="pills-header-home-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-header-home" type="button" role="tab"
-                            aria-controls="pills-header-home" aria-selected="true">Order Submission</button>
-                    </li>
-                    <li class="nav-item flex-grow-1" role="presentation">
-                        <button class="nav-link px-16 py-10 w-100" id="pills-header-details-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-header-details" type="button" role="tab"
-                            aria-controls="pills-header-details" aria-selected="false">Order Confirmation</button>
-                    </li>
-                    <li class="nav-item flex-grow-1" role="presentation">
-                        <button class="nav-link px-16 py-10 w-100" id="pills-header-profile-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-header-profile" type="button" role="tab"
-                            aria-controls="pills-header-profile" aria-selected="false">Order Processing</button>
-                    </li>
-                    <li class="nav-item flex-grow-1" role="presentation">
-                        <button class="nav-link px-16 py-10 w-100" id="pills-header-settings-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-header-settings" type="button" role="tab"
-                            aria-controls="pills-header-settings" aria-selected="false">Order Finished</button>
-                    </li>
-                    <li class="nav-item flex-grow-1" role="presentation">
-                        <button class="nav-link px-16 py-10 w-100" id="pills-shipping-settings-tab" data-bs-toggle="pill"
-                            data-bs-target="#pills-shipping-settings" type="button" role="tab"
-                            aria-controls="pills-shipping-settings" aria-selected="false">Order Shipping</button>
-                    </li>
-                </ul>
-            </div>
+    <div class="card basic-data-table">
+        <div class="card-body">
 
-            <div class="card-body p-24 pt-10">
-                <div class="tab-content" id="pills-tabContent-six">
-                    <div class="tab-pane fade show active" id="pills-header-home" role="tabpanel"
-                        aria-labelledby="pills-header-home-tab" tabindex="0">
-                        <div>
-                            @if (session()->has('success'))
-                                <div class="mb-16">
-                                    <div class="alert alert-success bg-success-100 text-success-600 border-success-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-0 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between"
-                                        role="alert">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <iconify-icon icon="akar-icons:double-check"
-                                                class="icon text-xl"></iconify-icon>
-                                            <span>{{ session()->get('success') }}</span>
-                                        </div>
-                                        <button class="remove-button text-success-600 text-xxl line-height-1"> <iconify-icon
-                                                icon="iconamoon:sign-times-light" class="icon"></iconify-icon></button>
+            <div class="table-responsive scroll-sm">
+                <table class="table bordered-table mb-0" data-page-length='10'>
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Code</th>
+                            <th scope="col">Product</th>
+                            <th scope="col">Order</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Total Payment</th>
+                            <th scope="col">Status Payment</th>
+                            <th scope="col">Status Order</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody align="center">
+                        @foreach ($order_list as $itemOrder)
+                            <tr>
+                                <td></td>
+                                <td>{{ $itemOrder->code_order }}</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <img src="{{ asset('storage/' . $itemOrder->product->thumbnail) }}" alt=""
+                                            class="flex-shrink-0 me-12 radius-8"
+                                            style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
+                                        <h6 class="text-md mb-0 fw-medium flex-grow-1">
+                                            {{ $itemOrder->product->name_product }}</h6>
                                     </div>
-                                </div>
-                            @endif
-                            @if (session()->has('deleted'))
-                                <div class="mb-16">
-                                    <div class="alert alert-danger bg-danger-100 text-danger-600 border-danger-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-0 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between"
-                                        role="alert">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <iconify-icon icon="mingcute:delete-2-line" class="icon text-xl"></iconify-icon>
-                                            <span>{{ session()->get('deleted') }}</span>
-                                        </div>
-                                        <button class="remove-button text-danger-600 text-xxl line-height-1">
-                                            <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon>
-                                        </button>
-                                    </div>
-                                </div>
-                            @endif
+                                </td>
 
-                            <form id="orderForm" action="{{ route('orders-update') }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div id="cart-container">
-                                    @if ($order_submit->isEmpty())
-                                        <!-- Tampilkan card kosong jika data tidak ada -->
-                                        <div class="card basic-data-table mb-3 p-3">
-                                            <div class="card-body text-center">
-                                                <p class="text-muted">No products order available.</p>
-                                            </div>
-                                        </div>
+                                <td>{{ $itemOrder->qty }} Set</td>
+                                <td>Rp. {{ number_format($itemOrder->total_payment) }}</td>
+                                <td>Rp. {{ number_format($itemOrder->total_payment * $itemOrder->qty) }}</td>
+                                <td>
+                                    @if ($itemOrder->payment_status == 'Paid')
+                                        <span class="fw-medium">
+                                            <span
+                                                class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">
+                                                Paid Payment
+                                            </span>
+                                        </span>
                                     @else
-                                        @foreach ($order_submit as $itemOrder)
-                                            <div class="card basic-data-table mb-3 p-3">
-                                                <div class="card-body">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <!-- Gambar dan detail produk -->
-                                                        <div
-                                                            class="d-flex flex-column align-items-end justify-content-center">
-                                                            <img src="{{ asset('storage/' . $itemOrder->product->thumbnail) }}"
-                                                                alt="Product Image" class="flex-shrink-0 me-3 radius-8"
-                                                                style="width: 120px; height: 100px; object-fit: cover; border-radius: 8px; margin-left: 20px;">
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <span class="text-muted text-sm">Code.
-                                                                {{ $itemOrder->code_order }}</span>
-                                                            <h6 class="fw-medium mb-1">
-                                                                {{ $itemOrder->product->name_product }}</h6>
-                                                            <span class="text-muted">Order: {{ $itemOrder->qty }}
-                                                                Set</span>
-                                                        </div>
-                                                        <div
-                                                            class="d-flex flex-column align-items-end justify-content-between">
-                                                            <div class="d-flex justify-content-between gap-1 w-100">
-                                                                <!-- Tombol Order Now -->
-                                                                <button type="button"
-                                                                    class="btn btn-dark radius-8 d-flex align-items-center justify-content-center gap-2 order-now-btn"
-                                                                    data-bs-toggle="modal"
-                                                                    data-bs-target="#productModal{{ $itemOrder->id }}">
-                                                                    <iconify-icon icon="icon-park-outline:view-grid-detail"
-                                                                        class="menu-icon text-lg"></iconify-icon>
-                                                                    <span>Order Detail</span>
-                                                                </button>
-                                                                <!-- Tombol Delete -->
-                                                                <a href="{{ route('delete-order', $itemOrder->id) }}"
-                                                                    class="btn btn-danger radius-8 d-flex align-items-center justify-content-center gap-2"
-                                                                    onclick="return confirm('Are you sure want to delete product order ?')">
-                                                                    <iconify-icon
-                                                                        icon="material-symbols:cancel-outline-rounded"
-                                                                        class="menu-icon text-lg"></iconify-icon>
-                                                                    <span>Cancel</span>
-                                                                </a>
-                                                            </div>
-                                                            <br>
-                                                            <span class="text-muted mb-3 mx-3">
-                                                                {{ \Carbon\Carbon::parse($itemOrder->updated_at)->format('d M Y') }}
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
+                                        <span class="fw-medium">
+                                            <span
+                                                class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">
+                                                Unpaid Payment
+                                            </span>
+                                        </span>
                                     @endif
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-header-details" role="tabpanel"
-                        aria-labelledby="pills-header-details-tab" tabindex="0">
-                        <div>
-                            @if (session()->has('success'))
-                                <div class="mb-16">
-                                    <div class="alert alert-success bg-success-100 text-success-600 border-success-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-0 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between"
-                                        role="alert">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <iconify-icon icon="akar-icons:double-check"
-                                                class="icon text-xl"></iconify-icon>
-                                            <span>{{ session()->get('success') }}</span>
-                                        </div>
-                                        <button class="remove-button text-success-600 text-xxl line-height-1">
-                                            <iconify-icon icon="iconamoon:sign-times-light"
-                                                class="icon"></iconify-icon></button>
-                                    </div>
-                                </div>
-                            @endif
-                            @if (session()->has('deleted'))
-                                <div class="mb-16">
-                                    <div class="alert alert-danger bg-danger-100 text-danger-600 border-danger-600 border-start-width-4-px border-top-0 border-end-0 border-bottom-0 px-24 py-13 mb-0 fw-semibold text-lg radius-4 d-flex align-items-center justify-content-between"
-                                        role="alert">
-                                        <div class="d-flex align-items-center gap-2">
-                                            <iconify-icon icon="mingcute:delete-2-line"
-                                                class="icon text-xl"></iconify-icon>
-                                            <span>{{ session()->get('deleted') }}</span>
-                                        </div>
-                                        <button class="remove-button text-danger-600 text-xxl line-height-1">
-                                            <iconify-icon icon="iconamoon:sign-times-light" class="icon"></iconify-icon>
+                                </td>
+                                <td>
+                                    <span class="fw-medium">
+                                        <button type="button"
+                                            class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm"
+                                            data-bs-toggle="modal" data-bs-target="#orderModal{{ $itemOrder->code_order }}">
+                                            <!-- Sesuaikan dengan ID modal -->
+                                            {{ $itemOrder->orderProgress->first()->name_progress ?? 'No Progress' }}
                                         </button>
-                                    </div>
-                                </div>
-                            @endif
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column align-items-end justify-content-between">
+                                        <div class="d-flex justify-content-between gap-1 w-100">
+                                            <!-- Tombol Order Detail selalu ditampilkan -->
+                                            <button type="button"
+                                                class="btn btn-dark btn-md radius-8 d-flex align-items-center justify-content-center gap-2 order-now-btn"
+                                                data-bs-toggle="modal" data-bs-target="#productModal{{ $itemOrder->id }}">
+                                                <iconify-icon icon="icon-park-outline:view-grid-detail"
+                                                    class="menu-icon text-lg"></iconify-icon>
+                                                <span>Order Detail</span>
+                                            </button>
 
-                            <form id="orderForm" action="{{ route('orders-update') }}" method="POST">
-                                @csrf
-                                @method('PUT')
-                                <div id="cart-container">
-                                    @if ($order_confirm->isEmpty())
-                                        <!-- Tampilkan card kosong jika data tidak ada -->
-                                        <div class="card basic-data-table mb-3 p-3">
-                                            <div class="card-body text-center">
-                                                <p class="text-muted">No products order available.</p>
-                                            </div>
+                                            <!-- Tombol Cancel hanya muncul jika status masih belum approved atau finished -->
+                                            @if (!in_array($itemOrder->status, ['approved', 'finished']))
+                                                <a href="{{ route('delete-order', $itemOrder->id) }}"
+                                                    class="btn btn-danger btn-md radius-8 d-flex align-items-center justify-content-center gap-2"
+                                                    onclick="return confirm('Are you sure want to delete product order ?')">
+                                                    <iconify-icon icon="material-symbols:cancel-outline-rounded"
+                                                        class="menu-icon text-lg"></iconify-icon>
+                                                    <span>Cancel</span>
+                                                </a>
+                                            @endif
                                         </div>
-                                    @else
-                                        @foreach ($order_confirm as $itemOrder)
-                                            <div class="card basic-data-table mb-3 p-3">
-                                                <div class="card-body">
-                                                    <div class="d-flex align-items-center justify-content-between">
-                                                        <!-- Gambar dan detail produk -->
-                                                        <div
-                                                            class="d-flex flex-column align-items-end justify-content-center">
-                                                            <img src="{{ asset('storage/' . $itemOrder->product->thumbnail) }}"
-                                                                alt="Product Image" class="flex-shrink-0 me-3 radius-8"
-                                                                style="width: 120px; height: 100px; object-fit: cover; border-radius: 8px; margin-left: 20px;">
-                                                        </div>
-                                                        <div class="flex-grow-1">
-                                                            <span class="text-muted text-sm">Code.
-                                                                {{ $itemOrder->code_order }}</span>
-                                                            <h6 class="fw-medium mb-1">
-                                                                {{ $itemOrder->product->name_product }}</h6>
-                                                            <span class="text-muted text-sm">Total Payment :
-                                                                {{ $itemOrder->qty }} Set X
-                                                                Rp. {{ number_format($itemOrder->total_payment) }}</span>
-                                                        </div>
-                                                        <div
-                                                            class="d-flex flex-column align-items-end justify-content-between">
-                                                            <div class="d-flex justify-content-between gap-1 w-100">
-                                                                <p class="text-lg">
-                                                                    <b>Rp.
-                                                                        {{ number_format($itemOrder->qty * $itemOrder->total_payment) }}</b>
-                                                                </p>
-                                                            </div>
-                                                            <br>
-                                                            {{-- <span class="text-muted mb-3 mx-3">
-                                                                {{ \Carbon\Carbon::parse($itemOrder->updated_at)->diffForHumans() }}
-                                                            </span> --}}
-                                                            @if ($itemOrder->payment_status == 'Paid')
-                                                                <span class="fw-medium">
-                                                                    <span
-                                                                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                                        Paid Payment
-                                                                    </span>
-                                                                </span>
-                                                            @else
-                                                                <span class="fw-medium">
-                                                                    <span
-                                                                        class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                                        Unpaid Payment
-                                                                    </span>
-                                                                </span>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        @endforeach
-                                    @endif
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-header-profile" role="tabpanel"
-                        aria-labelledby="pills-header-profile-tab" tabindex="0">
-                        <div>
-                            <div class="mb-16">
-                                <form id="orderForm" action="{{ route('orders-update') }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div id="cart-container">
-                                        @if ($order_progress->isEmpty())
-                                            <!-- Tampilkan card kosong jika data tidak ada -->
-                                            <div class="card basic-data-table mb-3 p-3">
-                                                <div class="card-body text-center">
-                                                    <p class="text-muted">No products order available.</p>
-                                                </div>
-                                            </div>
-                                        @else
-                                            @foreach ($order_progress as $itemOrder)
-                                                <div class="card basic-data-table mb-3 p-3">
-                                                    <div class="card-body">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <!-- Gambar dan detail produk -->
-                                                            <div
-                                                                class="d-flex flex-column align-items-end justify-content-center">
-                                                                <img src="{{ asset('storage/' . $itemOrder->product->thumbnail) }}"
-                                                                    alt="Product Image"
-                                                                    class="flex-shrink-0 me-3 radius-8"
-                                                                    style="width: 120px; height: 100px; object-fit: cover; border-radius: 8px; margin-left: 20px;">
-                                                            </div>
-                                                            <div class="flex-grow-1">
-                                                                <span class="text-muted text-sm">Code.
-                                                                    {{ $itemOrder->code_order }}</span>
-                                                                <h6 class="fw-medium mb-1">
-                                                                    {{ $itemOrder->product->name_product }}</h6>
-                                                                <span class="text-muted text-sm">Total Payment :
-                                                                    <b>Rp.
-                                                                        {{ number_format($itemOrder->qty * $itemOrder->total_payment) }}
-                                                                    </b>
-                                                                </span>
-                                                            </div>
-                                                            <div
-                                                                class="d-flex flex-column align-items-end justify-content-between">
-                                                                <div class="d-flex justify-content-between gap-4 w-100">
-                                                                    <span class="text-sm">Status Order : </span>
-                                                                </div>
-
-                                                                <span class="fw-medium">
-                                                                    <button type="button"
-                                                                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#orderModal{{ $itemOrder->code_order }}">
-                                                                        <!-- Sesuaikan dengan ID modal -->
-                                                                        {{ $itemOrder->orderProgress->first()->name_progress ?? 'No Progress' }}
-                                                                    </button>
-                                                                </span>
-
-                                                                {{-- 
-                                                                @if ($itemOrder->payment_status == 'Paid')
-                                                                    <span class="fw-medium">
-                                                                        <span
-                                                                            class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                                            Paid Payment
-                                                                        </span>
-                                                                    </span>
-                                                                @else
-                                                                    <span class="fw-medium">
-                                                                        <span
-                                                                            class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                                            Unpaid Payment
-                                                                        </span>
-                                                                    </span>
-                                                                @endif --}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @endif
                                     </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-header-settings" role="tabpanel"
-                        aria-labelledby="pills-header-settings-tab" tabindex="0">
-                        <div>
-                            <div class="mb-16">
-                                <form id="orderForm" action="{{ route('orders-update') }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div id="cart-container">
-                                        @if ($order_done->isEmpty())
-                                            <!-- Tampilkan card kosong jika data tidak ada -->
-                                            <div class="card basic-data-table mb-3 p-3">
-                                                <div class="card-body text-center">
-                                                    <p class="text-muted">No products order available.</p>
-                                                </div>
-                                            </div>
-                                        @else
-                                            @foreach ($order_done as $itemOrder)
-                                                <div class="card basic-data-table mb-3 p-3">
-                                                    <div class="card-body">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <!-- Gambar dan detail produk -->
-                                                            <div
-                                                                class="d-flex flex-column align-items-end justify-content-center">
-                                                                <img src="{{ asset('storage/' . $itemOrder->product->thumbnail) }}"
-                                                                    alt="Product Image"
-                                                                    class="flex-shrink-0 me-3 radius-8"
-                                                                    style="width: 120px; height: 100px; object-fit: cover; border-radius: 8px; margin-left: 20px;">
-                                                            </div>
-                                                            <div class="flex-grow-1">
-                                                                <span class="text-muted text-sm">Code.
-                                                                    {{ $itemOrder->code_order }}</span>
-                                                                <h6 class="fw-medium mb-1">
-                                                                    {{ $itemOrder->product->name_product }}</h6>
-                                                                <span class="text-muted text-sm">Total Payment :
-                                                                    <b>Rp.
-                                                                        {{ number_format($itemOrder->qty * $itemOrder->total_payment) }}
-                                                                    </b>
-                                                                </span>
-                                                            </div>
-                                                            <div
-                                                                class="d-flex flex-column align-items-end justify-content-between">
-                                                                <div class="d-flex justify-content-between gap-1 w-100">
-                                                                    <span class="text-sm">Status Order : </span>
-                                                                </div>
+                                </td>
 
-                                                                <span class="fw-medium">
-                                                                    <button type="button"
-                                                                        class="bg-success-focus text-success-main px-24 py-4 rounded-pill fw-medium text-sm"
-                                                                        data-bs-toggle="modal"
-                                                                        data-bs-target="#orderModal{{ $itemOrder->code_order }}">
-                                                                        <!-- Sesuaikan dengan ID modal -->
-                                                                        {{ $itemOrder->orderProgress->first()->name_progress ?? 'No Progress' }}
-                                                                    </button>
-                                                                </span>
-                                                                {{-- 
-                                                                    @if ($itemOrder->payment_status == 'Paid')
-                                                                        <span class="fw-medium">
-                                                                            <span
-                                                                                class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                                                Paid Payment
-                                                                            </span>
-                                                                        </span>
-                                                                    @else
-                                                                        <span class="fw-medium">
-                                                                            <span
-                                                                                class="bg-danger-focus text-danger-main px-24 py-4 rounded-pill fw-medium text-sm">
-                                                                                Unpaid Payment
-                                                                            </span>
-                                                                        </span>
-                                                                    @endif --}}
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @endif
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="tab-pane fade" id="pills-shipping-settings" role="tabpanel"
-                        aria-labelledby="pills-shipping-settings-tab" tabindex="0">
-                        <div>
-                            <div class="mb-16">
-                                <form id="orderForm" action="{{ route('orders-update') }}" method="POST">
-                                    @csrf
-                                    @method('PUT')
-                                    <div id="cart-container">
-                                        @if ($order_shipping->isEmpty())
-                                            <!-- Tampilkan card kosong jika data tidak ada -->
-                                            <div class="card basic-data-table mb-3 p-3">
-                                                <div class="card-body text-center">
-                                                    <p class="text-muted">No products order available.</p>
-                                                </div>
-                                            </div>
-                                        @else
-                                            @foreach ($order_shipping as $itemOrder)
-                                                <div class="card basic-data-table mb-3 p-3">
-                                                    <div class="card-body">
-                                                        <div class="d-flex align-items-center justify-content-between">
-                                                            <!-- Gambar dan detail produk -->
-                                                            <div
-                                                                class="d-flex flex-column align-items-end justify-content-center">
-                                                                <img src="{{ asset('storage/' . $itemOrder->order->product->thumbnail) }}"
-                                                                    alt="Product Image"
-                                                                    class="flex-shrink-0 me-3 radius-8"
-                                                                    style="width: 120px; height: 100px; object-fit: cover; border-radius: 8px; margin-left: 20px;">
-                                                            </div>
-                                                            <div class="flex-grow-1">
-                                                                <span class="text-muted text-sm">Code.
-                                                                    {{ $itemOrder->code_shipping }}</span>
-                                                                <h6 class="fw-medium mb-1">
-                                                                    {{ $itemOrder->order->product->name_product }}</h6>
-                                                                <span class="text-muted text-sm">Total Payment :
-                                                                    <b>Rp.
-                                                                        {{ number_format($itemOrder->order->qty * $itemOrder->order->total_payment) }}
-                                                                    </b>
-                                                                </span>
-                                                            </div>
-
-                                                            <div
-                                                                class="d-flex flex-column align-items-end justify-content-between">
-                                                                <div class="d-flex justify-content-between gap-1 w-100">
-                                                                    <span class="text-sm">Date Shipping : </span>
-                                                                </div>
-
-                                                                <span class="fw-medium">
-                                                                    {{ $itemOrder->created_at->format('d M Y H:i:s') }}
-                                                                </span>
-
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            @endforeach
-                                        @endif
-
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
-    </div>
-    </div>
 
-    @foreach ($order_submit as $itemOrder)
+    @foreach ($order_list as $itemOrder)
         <!-- Modal Detail Product -->
-        <div class="modal fade" id="productModal{{ $itemOrder->id }}" tabindex="-1"
-            aria-labelledby="productModalLabel" aria-hidden="true">
+        <div class="modal fade" id="productModal{{ $itemOrder->id }}" tabindex="-1" aria-labelledby="productModalLabel"
+            aria-hidden="true">
             <div class="modal-dialog modal-md">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -550,8 +177,8 @@
                                 <div class="col-md-3">
                                     <label class="form-label">Quantity</label>
                                     <input type="number" name="stock"
-                                        class="form-control @error('stock') is-invalid @enderror"
-                                        placeholder="Enter Stock" value="{{ number_format($itemOrder->qty) }}" readonly>
+                                        class="form-control @error('stock') is-invalid @enderror" placeholder="Enter Stock"
+                                        value="{{ number_format($itemOrder->qty) }}" readonly>
 
                                     @error('stock')
                                         <div class="invalid-feedback">
