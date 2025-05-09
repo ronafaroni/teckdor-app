@@ -626,4 +626,28 @@ class OrderController extends Controller
         return redirect()->route('data-finishing')->with('deleted', 'Finishing deleted successfully.');
     }
 
+    public function storeSelected(Request $request)
+    {
+        $selected = $request->input('selected_products'); // array of product IDs
+
+        if ($selected) {
+            foreach ($selected as $productId) {
+                \Log::info('User ID: ' . Auth::id());
+                \Log::info('Product ID: ' . $productId);
+
+                Order::create([
+                    'product_id' => $productId,
+                    'user_id' => Auth::id(), // gunakan Auth::id() untuk lebih aman
+                    'is_draft' => 'true',
+                    'qty' => '1',
+                ]);
+            }
+
+            return redirect()->route('data-cart')->with('success', 'Products added to cart successfully.');
+        }
+
+        return back()->with('error', 'No checked.');
+    }
+
+
 }

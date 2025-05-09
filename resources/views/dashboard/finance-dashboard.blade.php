@@ -15,7 +15,8 @@
 
     <div class="row gy-4">
         <div class="col-xxl-12">
-            <p>Selamat Datang, di Aplikasi TeckD'or Indonesia.</p>
+            <h3><b>Selamat Datang!</b></h3>
+            <p>TeckD'or Ameublements for Indonesia.</p>
         </div>
     </div>
 @endsection

@@ -31,57 +31,64 @@
                     tabindex="0">
                     <div class="row gy-4">
                         <div class="table-responsive scroll-sm">
-                            <table class="table bordered-table mb-0" data-page-length='10'>
-                                <thead>
-                                    <tr>
-                                        <th scope="col"></th>
-                                        <th scope="col">Code</th>
-                                        <th scope="col">Product</th>
-                                        <th scope="col">Category</th>
-                                        <th scope="col">Price</th>
-                                        <th scope="col">Stocks</th>
-                                        <th scope="col">Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody align="center">
-                                    @foreach ($product as $itemProduct)
-                                        <tr>
-                                            <td>
-                                                <div class="form-check style-check d-flex align-items-center">
-                                                    <label class="form-check-label">
-                                                        {{ $loop->iteration }}
-                                                    </label>
-                                                </div>
-                                            </td>
-                                            <td>{{ $itemProduct->code_product }}</td>
-                                            <td>
-                                                <div class="d-flex align-items-center">
-                                                    <img src="{{ asset('storage/' . $itemProduct->thumbnail) }}"
-                                                        alt="" class="flex-shrink-0 me-12 radius-8"
-                                                        style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
-                                                    <h6 class="text-md mb-0 fw-medium flex-grow-1">
-                                                        {{ $itemProduct->name_product }}</h6>
-                                                </div>
-                                            </td>
-                                            <td>{{ $itemProduct->category->name_category }}</td>
-                                            <td>{{ 'Rp. ' . number_format($itemProduct->price) ?? 'Rp. 0' }}</td>
-                                            <td>
-                                                {{ ($itemProduct->product_stocks_sum_stock ?? 0) + ($itemProduct->stock ?? 0) + ($itemProduct->orders_sum_qty ?? 0) }}
-                                                Set
-                                            </td>
-                                            <td>
-                                                <a href="{{ route('show-product', $itemProduct->id) }}"
-                                                    class="btn btn-danger radius-8 d-flex align-items-center justify-content-center gap-2">
-                                                    <iconify-icon icon="lucide:edit"
-                                                        class="menu-icon text-lg"></iconify-icon>
-                                                    <span>Order Now</span>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
+                            <form action="{{ route('store-selected-products') }}" method="POST">
+                                @csrf
 
-                                </tbody>
-                            </table>
+                                <table class="table bordered-table mb-0" data-page-length='10'>
+                                    <thead>
+                                        <tr>
+                                            <th scope="col"><input type="checkbox" id="select-all"></th>
+                                            {{-- checkbox untuk pilih semua --}}
+                                            <th scope="col">Code</th>
+                                            <th scope="col">Product</th>
+                                            <th scope="col">Category</th>
+                                            <th scope="col">Price</th>
+                                            <th scope="col">Stocks</th>
+                                            <th scope="col">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody align="center">
+                                        @foreach ($product as $data)
+                                            <tr>
+                                                <td>
+                                                    <input type="checkbox" class="form-check-input product-checkbox"
+                                                        name="selected_products[]" value="{{ $data->id }}">
+                                                </td>
+                                                <td>{{ $data->code_product }}</td>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <img src="{{ asset('storage/' . $data->thumbnail) }}" alt=""
+                                                            class="flex-shrink-0 me-12 radius-8"
+                                                            style="width: 40px; height: 40px; object-fit: cover;">
+                                                        <h6 class="text-md mb-0 fw-medium flex-grow-1">
+                                                            {{ $data->name_product }}</h6>
+                                                    </div>
+                                                </td>
+                                                <td>{{ $data->category->name_category }}</td>
+                                                <td>{{ 'Rp. ' . number_format($data->price) }}</td>
+                                                <td>
+                                                    {{ ($data->product_stocks_sum_stock ?? 0) + ($data->stock ?? 0) + ($data->orders_sum_qty ?? 0) }}
+                                                    Set
+                                                </td>
+                                                <td>
+                                                    <a href="{{ route('show-product', $data->id) }}"
+                                                        class="btn btn-danger radius-8 d-flex align-items-center justify-content-center gap-2">
+                                                        <iconify-icon icon="lucide:edit"
+                                                            class="menu-icon text-lg"></iconify-icon>
+                                                        <span>Order Now</span>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
+                                <button type="submit"
+                                    class="btn btn-dark radius-8 d-flex align-items-center justify-content-center gap-2">
+                                    <iconify-icon icon="lets-icons:check-fill" class="menu-icon text-lg"></iconify-icon>
+                                    <span>Cart Now</span>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -97,58 +104,66 @@
                         @else
                             <div class="row gy-4">
                                 <div class="table-responsive scroll-sm">
-                                    <table class="table bordered-table mb-0" data-page-length='10'>
-                                        <thead>
-                                            <tr>
-                                                <th scope="col"></th>
-                                                <th scope="col">Code</th>
-                                                <th scope="col">Product</th>
-                                                <th scope="col">Category</th>
-                                                <th scope="col">Price</th>
-                                                <th scope="col">Stocks</th>
-                                                <th scope="col">Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody align="center">
-                                            @foreach ($itemCategory->products as $data)
+                                    <form action="{{ route('store-selected-products') }}" method="POST">
+                                        @csrf
+                                        <table class="table bordered-table mb-0" data-page-length='10'>
+                                            <thead>
                                                 <tr>
-                                                    <td>
-                                                        <div class="form-check style-check d-flex align-items-center">
-                                                            <label class="form-check-label">
-                                                                {{ $loop->iteration }}
-                                                            </label>
-                                                        </div>
-                                                    </td>
-                                                    <td>{{ $data->code_product }}</td>
-                                                    <td>
-                                                        <div class="d-flex align-items-center">
-                                                            <img src="{{ asset('storage/' . $data->thumbnail) }}"
-                                                                alt="" class="flex-shrink-0 me-12 radius-8"
-                                                                style="width: 40px; height: 40px; object-fit: cover; border-radius: 8px;">
-                                                            <h6 class="text-md mb-0 fw-medium flex-grow-1">
-                                                                {{ $data->name_product }}</h6>
-                                                        </div>
-                                                    </td>
-                                                    <td>{{ $data->category->name_category }}</td>
-                                                    <td>{{ 'Rp. ' . number_format($data->price) ?? 'Rp. 0' }}</td>
-                                                    <td>
-                                                        {{ ($data->product_stocks_sum_stock ?? 0) + ($data->stock ?? 0) + ($data->orders_sum_qty ?? 0) }}
-                                                        Set
-                                                    </td>
-                                                    <td>
-                                                        <a href="{{ route('show-product', $itemProduct->id) }}"
-                                                            class="btn btn-danger radius-8 d-flex align-items-center justify-content-center gap-2">
-                                                            <iconify-icon icon="lucide:edit"
-                                                                class="menu-icon text-lg"></iconify-icon>
-                                                            <span>Order Now</span>
-                                                        </a>
-                                                    </td>
-
+                                                    <th scope="col"><input type="checkbox" id="select-all"></th>
+                                                    {{-- checkbox untuk pilih semua --}}
+                                                    <th scope="col">Code</th>
+                                                    <th scope="col">Product</th>
+                                                    <th scope="col">Category</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Stocks</th>
+                                                    <th scope="col">Action</th>
                                                 </tr>
-                                            @endforeach
+                                            </thead>
+                                            <tbody align="center">
+                                                @foreach ($product as $data)
+                                                    <tr>
+                                                        <td>
+                                                            <input class="class="form-check-input product-checkbox""
+                                                                type="checkbox" name="selected_products[]"
+                                                                value="{{ $data->id }}">
+                                                        </td>
+                                                        <td>{{ $data->code_product }}</td>
+                                                        <td>
+                                                            <div class="d-flex align-items-center">
+                                                                <img src="{{ asset('storage/' . $data->thumbnail) }}"
+                                                                    alt="" class="flex-shrink-0 me-12 radius-8"
+                                                                    style="width: 40px; height: 40px; object-fit: cover;">
+                                                                <h6 class="text-md mb-0 fw-medium flex-grow-1">
+                                                                    {{ $data->name_product }}</h6>
+                                                            </div>
+                                                        </td>
+                                                        <td>{{ $data->category->name_category }}</td>
+                                                        <td>{{ 'Rp. ' . number_format($data->price) }}</td>
+                                                        <td>
+                                                            {{ ($data->product_stocks_sum_stock ?? 0) + ($data->stock ?? 0) + ($data->orders_sum_qty ?? 0) }}
+                                                            Set
+                                                        </td>
+                                                        <td>
+                                                            <a href="{{ route('show-product', $data->id) }}"
+                                                                class="btn btn-danger radius-8 d-flex align-items-center justify-content-center gap-2">
+                                                                <iconify-icon icon="lucide:edit"
+                                                                    class="menu-icon text-lg"></iconify-icon>
+                                                                <span>Order Now</span>
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
 
-                                        </tbody>
-                                    </table>
+                                        <button type="submit"
+                                            class="btn btn-dark radius-8 d-flex align-items-center justify-content-center gap-2">
+                                            <iconify-icon icon="lets-icons:check-fill"
+                                                class="menu-icon text-lg"></iconify-icon>
+                                            <span>Cart Now</span>
+                                        </button>
+                                    </form>
+
                                 </div>
                             </div>
                         @endif
@@ -158,6 +173,14 @@
             </div>
         </div>
     </div>
+
+    <script>
+        document.getElementById('select-all').addEventListener('click', function(event) {
+            const checkboxes = document.querySelectorAll('input[name="selected_products[]"]');
+            checkboxes.forEach(cb => cb.checked = event.target.checked);
+        });
+    </script>
+
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {

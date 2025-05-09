@@ -132,4 +132,6 @@ Route::middleware('auth')->group(function () {
     Route::post('/order-finishing-update/{id}', [OrderController::class, 'orderFinishingUpdate'])->name('order-finishing-update');
     Route::get('/data-finishing-delete/{id}', [OrderController::class, 'dataFinishingDelete'])->name('data-finishing-delete');
 
+    Route::post('/store-selected-products', [OrderController::class, 'storeSelected'])->name('store-selected-products');
+
 });
