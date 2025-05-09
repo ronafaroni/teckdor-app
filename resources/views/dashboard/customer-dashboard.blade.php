@@ -120,12 +120,11 @@
                                                 </tr>
                                             </thead>
                                             <tbody align="center">
-                                                @foreach ($product as $data)
+                                                @foreach ($itemCategory->products as $data)
                                                     <tr>
                                                         <td>
-                                                            <input class="class="form-check-input product-checkbox""
-                                                                type="checkbox" name="selected_products[]"
-                                                                value="{{ $data->id }}">
+                                                            <input type="checkbox" class="form-check-input product-checkbox"
+                                                                name="selected_products[]" value="{{ $data->id }}">
                                                         </td>
                                                         <td>{{ $data->code_product }}</td>
                                                         <td>
